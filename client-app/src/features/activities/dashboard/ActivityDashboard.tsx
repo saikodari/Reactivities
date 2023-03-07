@@ -14,7 +14,7 @@ export default observer(function ActivityBashboard() {
   useEffect(() => {  
     if(activityRegistry.size <= 1) loadActivities();
   }, [activityStore,loadActivities,activityRegistry.size]);
-   if(activityStore.loadingIntial) return <LoadingComponent content='Loading app'/>
+   if(activityStore.loadingIntial) return <LoadingComponent content='Loading activities...'/>
   return (
     <Grid>
       <Grid.Column width="10">
