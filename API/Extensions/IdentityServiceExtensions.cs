@@ -30,8 +30,10 @@ namespace API.Extensions
                     ValidateAudience=false
                 };
             });
-            services.AddAuthorization(opt=>{
-                opt.AddPolicy("IsActivityHost",policy=>{
+         services.AddAuthorization(opt =>
+            {
+                opt.AddPolicy("IsActivityHost", policy =>
+                {
                     policy.Requirements.Add(new IsHostRequirement());
                 });
             });

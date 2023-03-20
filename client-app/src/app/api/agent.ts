@@ -1,6 +1,6 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { toast } from "react-toastify";
-import { Activity } from "../models/activity";
+import { Activity, ActivityFormValues } from "../models/activity";
 import { User, UserFormValues } from "../models/user";
 import { router } from "../router/Routes";
 import { store } from "../stores/store";
@@ -60,7 +60,7 @@ axios.interceptors.response.use(async response => {
 
 const responseBody =<T> (response: AxiosResponse<T>) => response.data;
 
-const request = {
+const requests = {
     get:<T> (url: string) => axios.get<T>(url).then(responseBody),
     post:<T> (url: string,body:{}) => axios.post<T>(url,body).then(responseBody),
     put:<T> (url: string,body: {}) => axios.put<T>(url,body).then(responseBody),
@@ -68,18 +68,17 @@ const request = {
 }
 
 const Activities ={
-    list: () => request.get<Activity[]>('/activities'),
-    details:(id:string)=>request.get<Activity>(`/activities/${id}`),
-    create:(activity:Activity) => request.post<void>(`/activities`,activity),
-    update:(activity: Activity)=>request.put<void>(`/activities/${activity.id}`,activity),
-    delete:(id:string) => request.del<void>(`/activities/${id}`)
+    list: () => requests.get<Activity[]>('/activities'),
+    details:(id:string)=>requests.get<Activity>(`/activities/${id}`),
+    create:(activity:ActivityFormValues) => requests.post<void>(`/activities`,activity),
+    update:(activity: ActivityFormValues)=>requests.put<void>(`/activities/${activity.id}`,activity),
+    delete:(id:string) => requests.del<void>(`/activities/${id}`),
+    attend:(id:string) => requests.post<void>(`/activities/${id}/attend`,{})
 }
-const Account={
-    current:() =>request.get<User>('/account'),
-    login:(user:UserFormValues)=>request.post<User>('/account/login',user),
-    register:(user:UserFormValues)=>request.post<User>('/account/register',user),
-
-
+const Account = {
+    current: () => requests.get<User>('account'),
+    login: (user: UserFormValues) => requests.post<User>('/account/login', user),
+    register: (user: UserFormValues) => requests.post<User>('/account/register', user)
 }
 const agent={
     Activities,
